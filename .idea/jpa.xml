@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpaBuddyIdeaProjectConfig" ddlActionDbType="mysql" newRepositoryParent="org.springframework.data.jpa.repository.JpaRepository">
+    <option name="defaultUnitInitialized" value="true" />
+    <option name="reLastEntityCreationPackage" value="StudentManagement/src/main/java/org/example/final_project/model" />
+    <option name="renamerInitialized" value="true" />
+    <option name="reverseEngineeringLastDbConnectionId" value="68e88db0-a7f5-448e-a8dc-00212d5d3548__opt_emplrate" />
+  </component>
+  <component name="PersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit name="Default" defaultIncludeChangeLogFile="StudentManagement/src/main/resources/db/changelog/db.changelog-master.xml">
+        <packages>
+          <package value="org.example.final_project" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
+</project>

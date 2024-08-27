@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DiffGenerationConfig">
+    <option name="sourceDbValue" value="68e88db0-a7f5-448e-a8dc-00212d5d3548" />
+    <option name="sourceDiffType" value="DB" />
+    <option name="sourceModelValue" value="Default" />
+    <option name="targetDbValue" value="68e88db0-a7f5-448e-a8dc-00212d5d3548" />
+    <option name="updateChangeLogPath" value="StudentManagement/src/main/resources/db/changelog/db.changelog-master.xml" />
+    <option name="updateDbConnectionName" value="68e88db0-a7f5-448e-a8dc-00212d5d3548__opt_emplrate" />
+  </component>
+</project>
