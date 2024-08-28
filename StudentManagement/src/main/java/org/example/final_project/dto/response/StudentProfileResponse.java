@@ -7,6 +7,9 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * create StudentProfileResponse dto
+ */
 @Getter
 @Setter
 @Builder

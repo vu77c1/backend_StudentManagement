@@ -9,6 +9,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * CreateDepartmentDto
+ */
 @Getter
 @Setter
 @Builder

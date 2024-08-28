@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * create UserResponse dto
+ */
 @Builder
 @AllArgsConstructor
 @Getter

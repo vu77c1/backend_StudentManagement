@@ -10,6 +10,9 @@ import org.example.final_project.model.Department;
 
 import java.io.Serializable;
 
+/**
+ * create CreateCourseDto
+ */
 @Getter
 @Setter
 public class CreateCourseDto implements Serializable {

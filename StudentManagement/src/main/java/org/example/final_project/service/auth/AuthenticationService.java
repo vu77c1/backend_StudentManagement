@@ -11,10 +11,7 @@ import org.example.final_project.dto.response.TokenResponse;
 import org.example.final_project.dto.response.UserDetailResponse;
 import org.example.final_project.dto.response.UserResponse;
 import org.example.final_project.exception.InvalidDataException;
-import org.example.final_project.model.auth.Role;
-import org.example.final_project.model.auth.Token;
-import org.example.final_project.model.auth.User;
-import org.example.final_project.model.auth.UserHasRole;
+import org.example.final_project.model.auth.*;
 import org.example.final_project.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +26,7 @@ import java.util.stream.Collectors;
 
 import static org.example.final_project.util.TokenType.REFRESH_TOKEN;
 import static org.example.final_project.util.TokenType.RESET_TOKEN;
+import static org.springframework.http.HttpHeaders.REFERER;
 
 @Service
 @RequiredArgsConstructor
@@ -116,18 +114,35 @@ public class AuthenticationService {
     }
 
 
-    public TokenResponse refreshToken(HttpServletRequest httpServletRequest) {
-        log.info("Refresh token request received");
-        log.info("Refresh token 111 {}", httpServletRequest.getHeader("x-token"));
-        String token = httpServletRequest.getHeader("x-token");
-        log.debug("Received token: {}", token); // Add this line
+    public TokenResponse refreshToken(HttpServletRequest request) {
+        log.info("---------- refreshToken ----------");
 
-        if (StringUtils.isBlank(token)) {
-            throw new InvalidDataException("token must be not blank");
+        final String refreshToken = request.getHeader(REFERER);
+        if (StringUtils.isBlank(refreshToken)) {
+            throw new InvalidDataException("Token must be not blank");
         }
-        final String username = jwtService.extractUsername(token, REFRESH_TOKEN);
-        log.info("username: {}", username);
-        return null;
+        final String userName = jwtService.extractUsername(refreshToken, REFRESH_TOKEN);
+        var user = userService.getByUsername(userName);
+        if (!jwtService.isValid(refreshToken, REFRESH_TOKEN, user)) {
+            throw new InvalidDataException("Not allow access with this token");
+        }
+
+        // create new access token
+        String accessToken = jwtService.generateToken(user);
+
+        // save token to db
+        tokenService.save(Token.builder()
+                .username(user.getUsername())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build());
+//        redisTokenService.save(RedisToken.builder().id(user.getUsername()).accessToken(accessToken).refreshToken(refreshToken).build());
+
+        return TokenResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .userId(user.getId())
+                .build();
     }
 
 

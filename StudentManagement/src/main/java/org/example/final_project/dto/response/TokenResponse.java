@@ -6,6 +6,9 @@ import lombok.Getter;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * create TokenResponse dto
+ */
 @Getter
 @Builder
 public class TokenResponse implements Serializable {

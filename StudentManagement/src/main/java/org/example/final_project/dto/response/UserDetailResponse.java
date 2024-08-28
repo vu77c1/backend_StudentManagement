@@ -7,7 +7,9 @@ import org.example.final_project.util.UserStatus;
 
 import java.io.Serializable;
 import java.util.Date;
-
+/**
+ * create UserDetailResponse dto
+ */
 @Builder
 @Getter
 public class UserDetailResponse implements Serializable {

@@ -12,6 +12,9 @@ import java.time.LocalDate;
 
 import static org.example.final_project.util.Gender.*;
 
+/**
+ * CreateStudentDto
+ */
 @Getter
 @Setter
 public class CreateStudentDto implements Serializable {

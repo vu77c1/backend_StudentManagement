@@ -8,6 +8,9 @@ import org.example.final_project.util.Grade;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * create StudentScoreResponse dto
+ */
 @Getter
 @Setter
 @Builder

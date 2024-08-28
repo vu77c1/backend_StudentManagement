@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * CreateEnrollmentDto
+ */
 @Getter
 @Setter
 public class CreateEnrollmentDto implements Serializable {

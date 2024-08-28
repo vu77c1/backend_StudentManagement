@@ -7,6 +7,9 @@ import org.example.final_project.util.Platform;
 
 import java.io.Serializable;
 
+/**
+ * SignInRequest
+ */
 @Getter
 public class SignInRequest implements Serializable {
 
