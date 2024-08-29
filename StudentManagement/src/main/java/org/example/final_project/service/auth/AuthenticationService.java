@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.example.final_project.dto.request.ResetPasswordDTO;
 import org.example.final_project.dto.request.SignInRequest;
 import org.example.final_project.dto.response.ResponseData;
 import org.example.final_project.dto.response.TokenResponse;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +38,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final UserService userService;
     private final TokenService tokenService;
+    private final PasswordEncoder passwordEncoder;
 
 
     public TokenResponse accessToken(SignInRequest signInRequest) {
@@ -145,6 +148,12 @@ public class AuthenticationService {
     }
 
 
+    /**
+     * Validate user and reset token
+     *
+     * @param token
+     * @return
+     */
     private User validateToken(String token) {
         // validate token
         var userName = jwtService.extractUsername(token, RESET_TOKEN);
@@ -157,6 +166,7 @@ public class AuthenticationService {
         if (!user.isEnabled()) {
             throw new InvalidDataException("User not active");
         }
+
         return user;
     }
 
@@ -166,7 +176,7 @@ public class AuthenticationService {
      * @param request
      * @return
      */
-    public String logout(HttpServletRequest request) {
+    public String removeToken(HttpServletRequest request) {
         log.info("---------- logout ----------");
 
         final String token = request.getHeader(REFERER);
@@ -179,4 +189,65 @@ public class AuthenticationService {
 
         return "Deleted!";
     }
+
+    public String forgotPassword(String email) {
+        log.info("---------- forgotPassword ----------");
+
+        // check email exists or not
+        User user = userService.getUserByEmail(email);
+
+        // generate reset token
+        String resetToken = jwtService.generateResetToken(user);
+
+        // save to db
+        tokenService.save(Token.builder()
+                .username(user.getUsername())
+                .resetToken(resetToken).build());
+//        redisTokenService.save(RedisToken.builder().id(user.getUsername()).resetToken(resetToken).build());
+
+        // TODO send email to user
+        String confirmLink = String.format("curl --location 'http://localhost:8080/auth/reset-password' \\\n" +
+                                           "--header 'accept: */*' \\\n" +
+                                           "--header 'Content-Type: application/json' \\\n" +
+                                           "--data '%s'", resetToken);
+        log.info("--> confirmLink: {}", confirmLink);
+
+        return resetToken;
+    }
+
+    /**
+     * Reset password
+     *
+     * @param secretKey
+     * @return
+     */
+    public String resetPassword(String secretKey) {
+        log.info("---------- resetPassword ----------");
+
+        // validate token
+        var user = validateToken(secretKey);
+
+        // check token by username
+        tokenService.getByUsername(user.getUsername());
+
+        return "Reset";
+    }
+
+    public String changePassword(ResetPasswordDTO request) {
+        log.info("---------- changePassword ----------");
+
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new InvalidDataException("Passwords do not match");
+        }
+
+        // get user by reset token
+        var user = validateToken(request.getSecretKey());
+
+        // update password
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        userService.saveUser(user);
+
+        return "Changed";
+    }
+
 }
