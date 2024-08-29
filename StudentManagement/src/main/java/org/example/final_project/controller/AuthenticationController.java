@@ -41,6 +41,10 @@ public class AuthenticationController {
     public ResponseEntity<ResponseData<?>> getUserValidToken(HttpServletRequest request) {
         return new ResponseEntity<>(authenticationService.getUserIsValidToken(request), OK);
     }
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        return new ResponseEntity<>(authenticationService.logout(request), OK);
+    }
 
 //    @PostMapping("/remove-token")
 //    public ResponseEntity<String> removeToken(HttpServletRequest request) {

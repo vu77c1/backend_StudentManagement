@@ -11,8 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.example.final_project.service.auth.JwtService;
 import org.example.final_project.service.auth.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +23,7 @@ import java.util.Collection;
 
 import static org.example.final_project.util.TokenType.ACCESS_TOKEN;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor

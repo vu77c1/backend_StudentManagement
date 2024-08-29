@@ -24,8 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.example.final_project.util.TokenType.REFRESH_TOKEN;
-import static org.example.final_project.util.TokenType.RESET_TOKEN;
+import static org.example.final_project.util.TokenType.*;
 import static org.springframework.http.HttpHeaders.REFERER;
 
 @Service
@@ -159,5 +158,25 @@ public class AuthenticationService {
             throw new InvalidDataException("User not active");
         }
         return user;
+    }
+
+    /**
+     * Logout
+     *
+     * @param request
+     * @return
+     */
+    public String logout(HttpServletRequest request) {
+        log.info("---------- logout ----------");
+
+        final String token = request.getHeader(REFERER);
+        if (StringUtils.isBlank(token)) {
+            throw new InvalidDataException("Token must be not blank");
+        }
+
+        final String userName = jwtService.extractUsername(token, ACCESS_TOKEN);
+        tokenService.delete(userName);
+
+        return "Deleted!";
     }
 }
