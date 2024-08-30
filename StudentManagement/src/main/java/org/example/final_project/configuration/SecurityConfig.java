@@ -30,8 +30,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-//    private final String[] WHITE_LIST = {"/auth/**","/**"};
-    private final String[] WHITE_LIST = {"/auth/**"};
+    private final String[] WHITE_LIST = {"/auth/**","/**"};
+//    private final String[] WHITE_LIST = {"/auth/**","/common/**"};
     private final UserService userService;
     private final PreFilter preFilter;
     @Value("${api.prefix}")

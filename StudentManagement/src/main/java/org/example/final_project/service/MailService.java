@@ -1,4 +1,4 @@
-package vn.tayjava.service;
+package org.example.final_project.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -39,7 +39,7 @@ public class MailService {
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setFrom(emailFrom, "Tây Java");
+        helper.setFrom(emailFrom, "Tuan Vu");
 
         if (recipients.contains(",")) { // send to multiple users
             helper.setTo(InternetAddress.parse(recipients));
